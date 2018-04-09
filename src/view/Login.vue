@@ -1,28 +1,38 @@
 <template>
-
- 
+  <Row type="flex" justify="center" class="code-row-bg">
+    <i-col :xs="22" :sm="18" :md="12" :lg="8">
      <section class="formContent">
-        <h2 class="title">登录</h2>
-        <Form ref="formData" :model="formData" :label-width="50" label-position="right" :rules="validate">
-              <FormItem label="账号" prop="userName"> 
-                <Input v-model="formData.userName" type="text" placeholder="请输入账号" :maxlength=10></Input>
+        <h2 class="title">Login</h2>
+        <Form ref="formData" :model="formData" label-position="left" :rules="validate">
+              <FormItem label="Account" prop="userName"> 
+                <Row>
+                  <Col span="24">
+                    <Input v-model="formData.userName" type="text" placeholder="please enter account" :maxlength=10></Input>
+                  </Col>
+                </Row>
               </FormItem>
-              <FormItem label="密码" prop="passWord">
-                <Input v-model="formData.passWord" type="password" placeholder="请输入密码" :maxlength=16></Input>
+              <FormItem label="password" prop="passWord">
+                <Row>
+                  <Col span="24">
+                    <Input v-model="formData.passWord" type="password" placeholder="please enter password" :maxlength=16></Input>
+                  </Col>
+                </Row>
               </FormItem>
-          <Button type="primary" @click="formSumbit('formData')">Submit</Button>
-          <Button type="ghost" @click="formRest" style="margin-left: 8px">Reset</Button>
+              <Button type="primary" @click="formSumbit('formData')">Submit</Button>
+              <Button type="ghost" @click="formRest" style="margin-left: 8px">Reset</Button>
       </Form>
     </section>
- 
-
+    </i-col>
+  </Row>
 </template>
 
 <style lang="less" scoped>
 .formContent {
+  width: 100%;
+  min-width: 300px;
+  max-width: 700px;
   margin-top: 150px;
   padding:35px 0;
-  max-width: 500px;
   .title{
     padding: 15px 0;
   }
