@@ -10,7 +10,7 @@ function mapRoutes(routeArr) {
   function map(routers) {
     routers.forEach(r => {
 
-      routes.push(r.path)
+      routes.push(r.name)
 
       if (r.children && r.children.length !== 0) {
         map(r.children)

@@ -8,7 +8,8 @@ export default {
   state: {
     authToken: localStorage.getItem(config.token) || null,
     userInfo: JSON.parse(localStorage.getItem('userInfo')) || null, //用户信息
-    roles: null //权限信息
+    roles: null, //当前用户权限数据
+    routerMap: null //可访问路由名称
   },
   getters: {
     token(state) {
@@ -19,6 +20,9 @@ export default {
     },
     roles(state) {
       return state.roles
+    },
+    routerMap(state) {
+      return state.routerMap
     }
   },
   mutations: {
@@ -33,6 +37,10 @@ export default {
     //变更用户权限数据
     changeRoles(state, payload) {
       state.roles = payload
+    },
+    //变更用户可访问路径数据
+    changeRouterMap(state, payload) {
+      state.routerMap = payload
     }
   },
   actions: {
@@ -96,17 +104,23 @@ export default {
 
         if (code == '200' && content) {
 
-          commit('changeRoles', mapRoutes(content))
+          commit('changeRoles', content)
+
+          commit('changeRouterMap', mapRoutes(content))
 
         } else {
 
           commit('changeRoles', null)
+
+          commit('changeRouterMap', null)
 
         }
 
       } catch (error) {
 
         commit('changeRoles', null)
+
+        commit('changeRouterMap', null)
 
       }
 

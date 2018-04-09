@@ -28,7 +28,13 @@ export default [{
       name: "Test",
       meta: { requireAuth: true },
       component: () =>
-        import ("@/view/Test")
+        import ("@/view/Test/Test")
+    }, {
+      path: '/test/Child',
+      name: 'TestChild',
+      meta: { requireAuth: true },
+      component: () =>
+        import ('@/view/Test/TestChild')
     }]
   }
 ];

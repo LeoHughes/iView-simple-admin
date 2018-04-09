@@ -31,18 +31,20 @@ router.beforeEach(async(to, from, next) => {
 
         await store.dispatch('getRoles', { token })
 
-        if (!store.getters.roles) {
+        if (!store.getters.pathMap) {
 
           next({
             path: '/login',
             redirect: to.fullPath
           })
 
+          return
+
         }
 
       }
 
-      if (store.getters.roles.includes(to.path)) {
+      if (store.getters.routerMap.includes(to.name)) {
 
         next()
 
