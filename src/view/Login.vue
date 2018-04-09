@@ -1,24 +1,33 @@
 <template>
-  <section class="formContent">
-    <Form ref="formData" :model="formData" :label-width="150" label-position="right" :rules="validate">
-      <FormItem label="账号" prop="userName">
-        <Input v-model="formData.userName" type="text" placeholder="请输入账号" :maxlength=10></Input>
-      </FormItem>
-      <FormItem label="密码" prop="passWord">
-        <Input v-model="formData.passWord" type="password" placeholder="请输入密码" :maxlength=16></Input>
-      </FormItem>
-      <FormItem>
-        <Button type="primary" @click="formSumbit('formData')">Submit</Button>
-        <Button type="ghost" @click="formRest" style="margin-left: 8px">Reset</Button>
-      </FormItem>
-    </Form>
-  </section>
+
+ 
+     <section class="formContent">
+        <h2 class="title">登录</h2>
+        <Form ref="formData" :model="formData" :label-width="50" label-position="right" :rules="validate">
+              <FormItem label="账号" prop="userName"> 
+                <Input v-model="formData.userName" type="text" placeholder="请输入账号" :maxlength=10></Input>
+              </FormItem>
+              <FormItem label="密码" prop="passWord">
+                <Input v-model="formData.passWord" type="password" placeholder="请输入密码" :maxlength=16></Input>
+              </FormItem>
+          <Button type="primary" @click="formSumbit('formData')">Submit</Button>
+          <Button type="ghost" @click="formRest" style="margin-left: 8px">Reset</Button>
+      </Form>
+    </section>
+ 
+
 </template>
 
 <style lang="less" scoped>
 .formContent {
-  padding: 32px;
+  margin-top: 150px;
+  padding:35px 0;
+  max-width: 500px;
+  .title{
+    padding: 15px 0;
+  }
 }
+
 </style>
 
 <script>
