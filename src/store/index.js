@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import UserModule from './modules/UserModule'
+import UserModule from '@/store/modules/UserModule'
+import MenuModule from '@/store/modules/MenuModule'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   modules: {
-    user: UserModule
+    user: UserModule,
+    menu: MenuModule
   }
 })
