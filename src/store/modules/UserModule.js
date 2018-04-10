@@ -132,6 +132,15 @@ export default {
 
       }
 
+    },
+    //用户登出
+    loginOut({ dispatch, commit }) {
+      commit('clearUserInfo')
+      commit('clearRolesAndRouterMap')
+      commit('clearMainLeftMenuData')
+
+      localStorage.setItem(config.token, null)
+      localStorage.setItem('userInfo', null)
     }
   }
 }
