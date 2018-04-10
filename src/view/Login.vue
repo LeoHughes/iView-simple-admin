@@ -1,20 +1,21 @@
 <template>
   <Row type="flex" justify="center" class="code-row-bg">
     <i-col :xs="22" :sm="18" :md="12" :lg="8">
+     
      <section class="formContent">
-        <h2 class="title">Login</h2>
-        <Form ref="formData" :model="formData" label-position="left" :rules="validate">
+         <h1 class="title">Login in Management</h1>
+        <Form class="formBody" ref="formData" :model="formData" label-position="left" :rules="validate">
               <FormItem label="Account" prop="userName"> 
                 <Row>
                   <Col span="24">
-                    <Input v-model="formData.userName" type="text" placeholder="please enter account" :maxlength=10></Input>
+                    <Input v-model="formData.userName" type="text" size="large" placeholder="please enter account" :maxlength=10></Input>
                   </Col>
                 </Row>
               </FormItem>
               <FormItem label="password" prop="passWord">
                 <Row>
                   <Col span="24">
-                    <Input v-model="formData.passWord" type="password" placeholder="please enter password" :maxlength=16></Input>
+                    <Input v-model="formData.passWord" type="password" size="large" placeholder="please enter password" :maxlength=16></Input>
                   </Col>
                 </Row>
               </FormItem>
@@ -28,15 +29,24 @@
 
 <style lang="less" scoped>
 .formContent {
-  width: 100%;
-  min-width: 300px;
-  max-width: 700px;
-  margin-top: 150px;
-  padding:35px 0;
+  margin-top: 160px;
+  text-align: center;
+  .formBody{
+    background-color:#fff;
+    display: inline-block;
+    width: 340px;
+    padding:25px 30px;
+    border: 1px solid #d8dee2;
+    border-radius: 4px;
+    margin-top:35px;
+  }
+
   .title{
-    padding: 15px 0;
+    width: 100%;
+    font-size: 24px;
   }
 }
+
 
 </style>
 
