@@ -1,40 +1,24 @@
 <style lang="less">
-.layout {
-  border: 1px solid #d7dde4;
-  background: #f5f7f9;
-  position: relative;
-  border-radius: 4px;
-  overflow: hidden;
 
-  &-logo {
-    width: 100%;
-    height: 80px;
-    background: #000;
-    border-radius: 3px;
-  }
-
-  &-header-bar {
-    background: #fff;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-  }
-}
 </style>
 
 <template>
   <Layout class="layout">
 
     <!-- 侧边栏 -->
-    <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+    <Sider ref="sider" collapsible hide-trigger :collapsed-width="80" breakpoint="md" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
 
+      <!-- logo -->
       <div class="layout-logo"></div>
+      <!-- logo end-->
 
-      <Menu theme="dark" width="auto">
+      <Menu theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''"  @on-open-change="resetSider">
         <Submenu v-for="(item,index) in mainLeftMenu" :key="index" :name="item.name">
           <template slot="title">
-            <Icon :type="item.type"></Icon>
-            {{ item.title }}
+            <Icon :type="item.icon"></Icon>
+            <span>{{ item.title }}</span>
           </template>
-          <router-link v-for="(child,index) in item.children" :key="index" :to="{path: child.path }">
+          <router-link v-show="!isCollapsed" v-for="(child,index) in item.children" :key="index" :to="{path: child.path }">
             <MenuItem :name="child.name">{{ child.title }}</MenuItem>
           </router-link>
         </Submenu>
@@ -42,30 +26,32 @@
     </Sider>
     <!-- 侧边栏 end-->
 
-    <Layout :style="{marginLeft: '205px'}">
+    <Layout :style="{marginLeft: isCollapsed ? '80px' : '205px',zIndex:999}">
       <!-- 头部 -->
       <Header class="layout-header-bar">
-        <Row type="flex" justify="end">
-          <Col span="4">
-          <Dropdown>
-            <a href="javascript:void(0)">
-              {{ userInfo.userName }}
-              <Icon type="arrow-down-b"></Icon>
-            </a>
-            <DropdownMenu slot="list">
-              <DropdownItem>个人中心</DropdownItem>
-              <DropdownItem>退出</DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
-          </Col>
-        </Row>
+        <div class="collapsible-icon">
+          <Icon :type="isCollapsed ? 'chevron-left' : 'chevron-right'" size="16" @click.native="toggleSider"></Icon>
+        </div>
+
+        <Dropdown class="header-control">
+          <a href="javascript:void(0)">
+            {{ userInfo.roleName }}
+            <Icon type="arrow-down-b"></Icon>
+          </a>
+          <DropdownMenu slot="list">
+            <DropdownItem>个人中心</DropdownItem>
+            <DropdownItem>
+              <p @click="userLoginOut">退出</p>
+            </DropdownItem>
+          </DropdownMenu>
+        </Dropdown>
       </Header>
       <!-- 头部 end-->
 
       <!-- content -->
-      <Content>
+      <Content :style="{padding:'10px'}">
         <Card>
-          <div :style="{height: '90vh'}">
+          <div>
             <router-view></router-view>
           </div>
         </Card>
@@ -77,28 +63,44 @@
 </template>
 
 <script>
-import { mapGetters,mapActions } from "vuex";
+import '@/style/Index.less'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Index",
   data() {
     return {
-     
+      isCollapsed: false, //是否收起边栏
     };
   },
   computed: {
-    ...mapGetters(['token','userInfo','mainLeftMenu'])
+    ...mapGetters(["token", "userInfo", "mainLeftMenu"])
   },
-  
-  beforeMount(){
-    this.$Spin.show()
-    this.getMainLeftMenu(this.token)
+  beforeMount() {
+    this.$Spin.show();
+    this.getMainLeftMenu(this.token);
   },
-  updated(){
-    this.$Spin.hide()
+  updated() {
+    this.$Spin.hide();
   },
-  methods:{
-    ...mapActions(['getMainLeftMenu']),
+  methods: {
+    ...mapActions(["getMainLeftMenu", "loginOut"]),
+    //登出
+    userLoginOut() {
+      this.loginOut();
+      this.$router.push({ path: "/login" });
+    },
+    //收起边栏
+    toggleSider() {
+        this.$refs.sider.toggleCollapse();
+        this.isCollapsed = !this.isCollapsed;
+    },
+    //边栏收起状态下点击菜单图标则展开
+    resetSider(){
+      if(this.isCollapsed){
+        this.toggleSider();
+      }
+    }
   }
 };
 </script>
