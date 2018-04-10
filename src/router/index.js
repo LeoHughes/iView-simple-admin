@@ -10,6 +10,7 @@ import store from '@/store/index'
 Vue.use(Router);
 
 const router = new Router({
+  // mode: 'history',
   routes
 })
 
@@ -31,7 +32,7 @@ router.beforeEach(async(to, from, next) => {
 
         await store.dispatch('getRoles', { token })
 
-        if (!store.getters.pathMap) {
+        if (!store.getters.routerMap) {
 
           next({
             path: '/login',
