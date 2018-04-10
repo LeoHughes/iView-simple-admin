@@ -2,6 +2,7 @@ import axios from '@/util/instance'
 import qs from 'qs'
 import config from '@/config'
 import { mapRoutes } from '@/router/util'
+import { stat } from 'fs';
 
 
 export default {
@@ -38,9 +39,19 @@ export default {
     changeRoles(state, payload) {
       state.roles = payload
     },
-    //变更用户可访问路径数据
+    //变更用户可访问路由数据
     changeRouterMap(state, payload) {
       state.routerMap = payload
+    },
+    //清空用户数据
+    clearUserInfo(state) {
+      state.authToken = null
+      state.userInfo = null
+    },
+    //清空用户权限及可访问路由数据
+    clearRolesAndRouterMap(state) {
+      state.roles = null
+      state.routerMap = null
     }
   },
   actions: {
@@ -78,17 +89,13 @@ export default {
 
         } else {
 
-          commit('changeUserInfo', null)
-
-          commit('changeToken', null)
+          commit('clearUserInfo')
 
         }
 
       } catch (error) {
 
-        commit('changeUserInfo', null)
-
-        commit('changeToken', null)
+        commit('clearUserInfo')
 
       }
 
@@ -110,17 +117,13 @@ export default {
 
         } else {
 
-          commit('changeRoles', null)
-
-          commit('changeRouterMap', null)
+          commit('clearRolesAndRouterMap')
 
         }
 
       } catch (error) {
 
-        commit('changeRoles', null)
-
-        commit('changeRouterMap', null)
+        commit('clearRolesAndRouterMap')
 
       }
 
