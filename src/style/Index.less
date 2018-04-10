@@ -1,0 +1,41 @@
+.layout {
+  border: 1px solid #d7dde4;
+  background: #f5f7f9;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
+
+  &-logo {
+    width: 100%;
+    height: 80px;
+    background: #000;
+    border-radius: 3px;
+  }
+
+  .miniMenu {
+    span,.ivu-menu-submenu-title-icon{
+      display: none;
+      transition: display 0.2s ease;
+    }
+  }
+
+  &-header-bar {
+    position: relative;
+    background: #fff;
+
+    .collapsible-icon {
+      position: absolute;
+      top: 0;
+      left: 20px;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .header-control {
+      position: absolute;
+      top: 0;
+      right: 20px;
+    }
+  }
+}
