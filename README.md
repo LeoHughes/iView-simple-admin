@@ -1,6 +1,6 @@
-# admin-demo
+# iview-simple-admin
 
-> iview-simple-admin
+> A admin management system template based on Vue and iView
 
 ## Build Setup
 

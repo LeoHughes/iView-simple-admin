@@ -1,14 +1,17 @@
+import { Message } from 'iview'
 import axios from '@/util/instance'
 import qs from 'qs'
 import config from '@/config'
 import { mapRoutes } from '@/router/util'
+import { stat } from 'fs';
 
 
 export default {
   state: {
     authToken: localStorage.getItem(config.token) || null,
     userInfo: JSON.parse(localStorage.getItem('userInfo')) || null, //用户信息
-    roles: null //权限信息
+    roles: null, //当前用户权限数据
+    routerMap: null //可访问路由名称
   },
   getters: {
     token(state) {
@@ -19,6 +22,9 @@ export default {
     },
     roles(state) {
       return state.roles
+    },
+    routerMap(state) {
+      return state.routerMap
     }
   },
   mutations: {
@@ -33,6 +39,20 @@ export default {
     //变更用户权限数据
     changeRoles(state, payload) {
       state.roles = payload
+    },
+    //变更用户可访问路由数据
+    changeRouterMap(state, payload) {
+      state.routerMap = payload
+    },
+    //清空用户数据
+    clearUserInfo(state) {
+      state.authToken = null
+      state.userInfo = null
+    },
+    //清空用户权限及可访问路由数据
+    clearRolesAndRouterMap(state) {
+      state.roles = null
+      state.routerMap = null
     }
   },
   actions: {
@@ -70,17 +90,15 @@ export default {
 
         } else {
 
-          commit('changeUserInfo', null)
-
-          commit('changeToken', null)
+          commit('clearUserInfo')
 
         }
 
       } catch (error) {
 
-        commit('changeUserInfo', null)
+        Message.info('出错了,请稍后再试')
 
-        commit('changeToken', null)
+        commit('clearUserInfo')
 
       }
 
@@ -96,17 +114,21 @@ export default {
 
         if (code == '200' && content) {
 
-          commit('changeRoles', mapRoutes(content))
+          commit('changeRoles', content)
+
+          commit('changeRouterMap', mapRoutes(content))
 
         } else {
 
-          commit('changeRoles', null)
+          commit('clearRolesAndRouterMap')
 
         }
 
       } catch (error) {
 
-        commit('changeRoles', null)
+        Message.info('出错了,请稍后再试')
+
+        commit('clearRolesAndRouterMap')
 
       }
 

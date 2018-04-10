@@ -5,45 +5,38 @@
   position: relative;
   border-radius: 4px;
   overflow: hidden;
-}
-.layout-header-bar {
-  background: #fff;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+
+  &-logo {
+    width: 100%;
+    height: 80px;
+    background: #000;
+    border-radius: 3px;
+  }
+
+  &-header-bar {
+    background: #fff;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  }
 }
 </style>
 
 <template>
-  <Layout>
+  <Layout class="layout">
 
     <!-- 侧边栏 -->
     <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-      <Menu active-name="1-1" width="auto" :open-names="['1']" >
-        <Submenu name="1">
+
+      <div class="layout-logo"></div>
+
+      <Menu theme="dark" width="auto">
+        <Submenu v-for="(item,index) in mainLeftMenu" :key="index" :name="item.name">
           <template slot="title">
-            <Icon type="ios-navigate"></Icon>
-            Item 1
+            <Icon :type="item.type"></Icon>
+            {{ item.title }}
           </template>
-          <MenuItem name="1-1">
-          <router-link :to="{path:'/test'}">test</router-link>
-          </MenuItem>
-          <MenuItem name="1-2">Option 2</MenuItem>
-          <MenuItem name="1-3">Option 3</MenuItem>
-        </Submenu>
-        <Submenu name="2">
-          <template slot="title">
-            <Icon type="ios-keypad"></Icon>
-            Item 2
-          </template>
-          <MenuItem name="2-1">Option 1</MenuItem>
-          <MenuItem name="2-2">Option 2</MenuItem>
-        </Submenu>
-        <Submenu name="3">
-          <template slot="title">
-            <Icon type="ios-analytics"></Icon>
-            Item 3
-          </template>
-          <MenuItem name="3-1">Option 1</MenuItem>
-          <MenuItem name="3-2">Option 2</MenuItem>
+          <router-link v-for="(child,index) in item.children" :key="index" :to="{path: child.path }">
+            <MenuItem :name="child.name">{{ child.title }}</MenuItem>
+          </router-link>
         </Submenu>
       </Menu>
     </Sider>
@@ -51,27 +44,22 @@
 
     <Layout :style="{marginLeft: '205px'}">
       <!-- 头部 -->
-        <Menu mode="horizontal" active-name="1" :style="{width:'100%'}">
-          <div class="layout-logo"></div>
-          <div class="layout-nav">
-            <MenuItem name="1">
-            <Icon type="ios-navigate"></Icon>
-            Item 1
-            </MenuItem>
-            <MenuItem name="2">
-            <Icon type="ios-keypad"></Icon>
-            Item 2
-            </MenuItem>
-            <MenuItem name="3">
-            <Icon type="ios-analytics"></Icon>
-            Item 3
-            </MenuItem>
-            <MenuItem name="4">
-            <Icon type="ios-paper"></Icon>
-            Item 4
-            </MenuItem>
-          </div>
-        </Menu>
+      <Header class="layout-header-bar">
+        <Row type="flex" justify="end">
+          <Col span="4">
+          <Dropdown>
+            <a href="javascript:void(0)">
+              {{ userInfo.userName }}
+              <Icon type="arrow-down-b"></Icon>
+            </a>
+            <DropdownMenu slot="list">
+              <DropdownItem>个人中心</DropdownItem>
+              <DropdownItem>退出</DropdownItem>
+            </DropdownMenu>
+          </Dropdown>
+          </Col>
+        </Row>
+      </Header>
       <!-- 头部 end-->
 
       <!-- content -->
@@ -89,5 +77,28 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters,mapActions } from "vuex";
+
+export default {
+  name: "Index",
+  data() {
+    return {
+     
+    };
+  },
+  computed: {
+    ...mapGetters(['token','userInfo','mainLeftMenu'])
+  },
+  
+  beforeMount(){
+    this.$Spin.show()
+    this.getMainLeftMenu(this.token)
+  },
+  updated(){
+    this.$Spin.hide()
+  },
+  methods:{
+    ...mapActions(['getMainLeftMenu']),
+  }
+};
 </script>
