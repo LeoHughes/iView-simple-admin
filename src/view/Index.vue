@@ -12,7 +12,7 @@
       <div class="layout-logo"></div>
       <!-- logo end-->
 
-      <Menu theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''"  @on-open-change="resetSider">
+      <Menu :active-name="$route.name" theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''"  @on-open-change="resetSider">
         <Submenu v-for="(item,index) in mainLeftMenu" :key="index" :name="item.name">
           <template slot="title">
             <Icon :type="item.icon"></Icon>
@@ -26,7 +26,7 @@
     </Sider>
     <!-- 侧边栏 end-->
 
-    <Layout :style="{marginLeft: isCollapsed ? '80px' : '205px',zIndex:999}">
+    <Layout :class="mainCss">
       <!-- 头部 -->
       <Header class="layout-header-bar">
         <div class="collapsible-icon">
@@ -74,7 +74,13 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["token", "userInfo", "mainLeftMenu"])
+    ...mapGetters(["token", "userInfo", "mainLeftMenu"]),
+    mainCss(){
+      return [
+        'main',
+        this.isCollapsed ? 'main-collapse' : ''
+      ]
+    }
   },
   beforeMount() {
     this.$Spin.show();
