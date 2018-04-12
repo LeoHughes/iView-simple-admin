@@ -16,7 +16,7 @@
       <!-- 头部 end-->
 
       <!-- content -->
-      <Content :style="{padding:'10px'}">
+      <Content class="content">
         <Card>
           <div>
             <router-view></router-view>
@@ -34,7 +34,7 @@ import "@/style/Index.less";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 import SiderMenu from "@/components/main/SiderMenu";
-import MainHeader from '@/components/main/Header';
+import MainHeader from "@/components/main/Header";
 
 export default {
   name: "Index",
@@ -63,13 +63,13 @@ export default {
   },
   methods: {
     ...mapActions(["loginOut"]),
+    changeSiderCollapsed() {
+      this.isSiderCollapsed = !this.isSiderCollapsed;
+    },
     //收起边栏
     toggleSiderMenu() {
       this.changeSiderCollapsed();
       this.$refs.siderMenu.toggleSider();
-    },
-    changeSiderCollapsed() {
-      this.isSiderCollapsed = !this.isSiderCollapsed;
     }
   }
 };

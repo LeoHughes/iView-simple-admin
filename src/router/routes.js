@@ -24,17 +24,32 @@ export default [{
     component: () =>
       import ("@/view/Index"),
     children: [{
-      path: "/test",
-      name: "Test",
-      meta: { requireAuth: true },
-      component: () =>
-        import ("@/view/Test/Test")
-    }, {
-      path: '/test/Child',
-      name: 'TestChild',
-      meta: { requireAuth: true },
-      component: () =>
-        import ('@/view/Test/TestChild')
-    }]
+        path: "/test",
+        name: "Test",
+        meta: { requireAuth: true },
+        component: () =>
+          import ("@/view/Test/Test")
+      }, {
+        path: '/test/Child',
+        name: 'TestChild',
+        meta: { requireAuth: true },
+        component: () =>
+          import ('@/view/Test/TestChild')
+      },
+      {
+        path: '/message',
+        name: 'Message',
+        meta: { requireAuth: true },
+        component: () =>
+          import ('@/view/UserCenter/Message')
+      },
+      {
+        path: '/user/center',
+        name: 'UserCenter',
+        meta: { requireAuth: true },
+        component: () =>
+          import ('@/view/UserCenter/Center')
+      }
+    ]
   }
 ];
