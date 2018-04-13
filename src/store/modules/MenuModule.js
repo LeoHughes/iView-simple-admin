@@ -52,15 +52,11 @@ export default {
 
         const { code, content } = data
 
-        if (code == '200') {
-
-          commit('changeMainLeftMenu', content)
-
-        }
+        code == '200' ? commit('changeMainLeftMenu', content) : commit('clearMainLeftMenuData')
 
       } catch (error) {
 
-        Message.info('出错了,请稍后再试')
+        Message.error('出错了,请稍后再试')
 
         commit('clearMainLeftMenuData')
 

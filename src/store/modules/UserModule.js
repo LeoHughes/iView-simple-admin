@@ -96,7 +96,7 @@ export default {
 
       } catch (error) {
 
-        Message.info('出错了,请稍后再试')
+        Message.error('出错了,请稍后再试')
 
         commit('clearUserInfo')
 
@@ -126,7 +126,7 @@ export default {
 
       } catch (error) {
 
-        Message.info('出错了,请稍后再试')
+        Message.error('出错了,请稍后再试')
 
         commit('clearRolesAndRouterMap')
 
