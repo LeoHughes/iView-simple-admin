@@ -56,8 +56,6 @@ export default {
 
       } catch (error) {
 
-        Message.error('出错了,请稍后再试')
-
         commit('clearMainLeftMenuData')
 
       }

@@ -1,9 +1,8 @@
-import { Message } from 'iview'
 import axios from '@/util/instance'
 import qs from 'qs'
 import config from '@/config'
 import { mapRoutes } from '@/router/util'
-import { stat } from 'fs';
+
 
 
 export default {
@@ -96,8 +95,6 @@ export default {
 
       } catch (error) {
 
-        Message.error('出错了,请稍后再试')
-
         commit('clearUserInfo')
 
       }
@@ -125,8 +122,6 @@ export default {
         }
 
       } catch (error) {
-
-        Message.error('出错了,请稍后再试')
 
         commit('clearRolesAndRouterMap')
 

@@ -1,5 +1,20 @@
-<style lang="less">
+<style lang="less" scoped>
+.layout {
+  border: 1px solid #d7dde4;
+  background: #f5f7f9;
+  position: relative;
+  border-radius: 4px;
+  overflow: hidden;
 
+  .main{
+    margin-left: 205px;
+
+    &-collapse{
+      margin-left: 80px;
+      transition: margin 0.4s ease;
+    }
+  }
+}
 </style>
 
 <template>
@@ -16,13 +31,7 @@
       <!-- 头部 end-->
 
       <!-- content -->
-      <Content class="content">
-        <Card>
-          <div>
-            <router-view></router-view>
-          </div>
-        </Card>
-      </Content>
+      <MainContent></MainContent>
       <!-- content end-->
     </Layout>
 
@@ -35,16 +44,19 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 
 import SiderMenu from "@/components/main/SiderMenu";
 import MainHeader from "@/components/main/Header";
+import MainContent from '@/components/main/Content';
 
 export default {
   name: "Index",
   components: {
     SiderMenu,
-    MainHeader
+    MainHeader,
+    MainContent
   },
   data() {
     return {
-      isSiderCollapsed: false //是否收起边栏
+      loading:true,
+      isSiderCollapsed: false, //是否收起边栏
     };
   },
   computed: {
@@ -53,13 +65,13 @@ export default {
       return ["main", this.isSiderCollapsed ? "main-collapse" : ""];
     }
   },
-  beforeMount() {
-    this.$Spin.show();
-  },
-  mounted() {
+  // beforeMount() {
+  //   this.$Spin.show();
+  // },
+  updated() {
     setTimeout(() => {
-      this.$Spin.hide();
-    }, 1000);
+      this.loading = !this.loading;
+    },1500)
   },
   methods: {
     ...mapActions(["loginOut"]),

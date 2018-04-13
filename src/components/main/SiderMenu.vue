@@ -2,14 +2,18 @@
 .logo {
   width: 100%;
   height: 80px;
-  background: #000;
+  padding:10px 0;
+  background: transparent;
   border-radius: 3px;
-}
 
-.miniMenu {
-  .title {
-    display: none;
-    transition: display 0.2s ease;
+  img{
+    max-width: 100%;
+    max-height: 100%;
+  }
+
+  &.mini{
+    height:40px;
+    padding:5px 0;
   }
 }
 </style>
@@ -17,30 +21,33 @@
 <template>
   <!-- 侧边栏 -->
   <Sider ref="sider" collapsible hide-trigger :collapsed-width="80" breakpoint="md" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+    <Spin fix v-if="loading"></Spin>
 
     <!-- logo -->
-    <div class="logo"></div>
+    <div class="logo" :class="{mini:isCollapsed}">
+      <img src="@/assets/images/logo.png" alt="">
+    </div>
     <!-- logo end-->
 
-    <Menu ref="leftMenu" accordion :open-names="[activeName]" :active-name="$route.name" theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''" @on-select="resetSider">
+    <Menu ref="leftMenu" v-show="!isCollapsed && !loading" accordion :open-names="[activeName]" :active-name="$route.name" theme="dark" width="auto" @on-select="resetSider">
 
-      <template v-if="!isCollapsed">
-        <Submenu v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
-          <template slot="title">
-            <Icon :type="item.icon"></Icon>
-            <span class="title">{{ item.title }}</span>
-          </template>
-          <router-link v-for="(child,i) in item.children" :key="i" :to="{path: child.path }">
-            <MenuItem v-show="!isCollapsed" :name="child.name" @click.native="addOpenTab(child)">{{ child.title }}</MenuItem>
-          </router-link>
-        </Submenu>
-      </template>
+      <Submenu v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
+        <template slot="title">
+          <Icon :type="item.icon"></Icon>
+          <span class="title">{{ item.title }}</span>
+        </template>
+        <router-link v-for="(child,i) in item.children" :key="i" :to="{path: child.path }">
+          <MenuItem :name="child.name" @click.native="addOpenTab(child)">{{ child.title }}</MenuItem>
+        </router-link>
+      </Submenu>
 
-      <template v-else>
-        <MenuItem v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
-        <Icon :type="item.icon"></Icon>
-        </MenuItem>
-      </template>
+    </Menu>
+
+    <Menu ref="leftMenu" v-show="isCollapsed && !loading" accordion :open-names="[activeName]" :active-name="$route.name" theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''" @on-select="resetSider">
+
+      <MenuItem v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
+      <Icon :type="item.icon"></Icon>
+      </MenuItem>
 
     </Menu>
 
@@ -48,7 +55,6 @@
 </template>
 
 <script>
-import { Menu } from "iview";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -60,7 +66,9 @@ export default {
     }
   },
   data() {
-    return {};
+    return {
+      loading: true,
+    };
   },
   computed: {
     ...mapGetters(["mainLeftMenu", "openTabs", "activeTab"]),
@@ -83,12 +91,29 @@ export default {
       });
     }
   },
-  beforeMount() {
+  async beforeMount() {
     //获取菜单数据
-    this.getMainLeftMenu();
+    await this.getMainLeftMenu();
+
+    if (!this.mainLeftMenu || this.mainLeftMenu.length === 0) {
+      this.$Notice.error({
+        title: "错误信息",
+        desc: "获取左侧菜单失败,请稍后再试",
+        duration: 2,
+        onClose: () => {
+          this.$router.push({ path: "/login" });
+          this.clearUserInfo();
+        }
+      });
+    }
+  },
+  mounted() {
+    setTimeout(() => {
+      this.loading = !this.loading;
+    }, 1500);
   },
   methods: {
-    ...mapMutations(["updateOpenTabs", "updateActiveTab"]),
+    ...mapMutations(["clearUserInfo", "updateOpenTabs", "updateActiveTab"]),
     ...mapActions(["getMainLeftMenu"]),
     //收起边栏
     toggleSider() {
@@ -101,8 +126,8 @@ export default {
         this.toggleSider();
       }
     },
-    addOpenTab(tabObj){
-      this.updateOpenTabs({type:0,tabObj})
+    addOpenTab(tabObj) {
+      this.updateOpenTabs({ type: 0, tabObj });
     }
   }
 };

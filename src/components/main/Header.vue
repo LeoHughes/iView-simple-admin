@@ -15,8 +15,13 @@
   .header-control {
     position: absolute;
     top: 0;
-    right: 20px;
-    width: 300px;
+    right: 50px;
+
+    .avatar{
+      &:hover{
+        cursor: pointer;
+      }
+    }
   }
 }
 </style>
@@ -27,26 +32,15 @@
       <Icon :type="isCollapsed ? 'chevron-right' : 'chevron-left'" size="20" @click.native="toggleSiderMenu"></Icon>
     </div>
 
-    <Row class="header-control">
-
-      <Col span="12">
-      <Tooltip>
-        <template slot="content">
-          <router-link :to="{path:'/message'}">test</router-link>
-        </template>
-        <Badge dot>
-          <Icon type="ios-bell-outline" size="20"></Icon>
-        </Badge>
-      </Tooltip>
-      </Col>
-
-      <Col span="12">
+    <div class="header-control">
       <Dropdown>
-        <a href="javascript:void(0)">
-          {{ userRoleName }}
-          <Icon type="arrow-down-b"></Icon>
-        </a>
+        <Badge count="100" overflow-count="999">
+          <Avatar class="avatar" size="large" :src="userInfo.avatar || ''"></Avatar>
+        </Badge>
         <DropdownMenu slot="list">
+          <DropdownItem>
+            <router-link :to="{path:'/message'}">未读消息</router-link>
+          </DropdownItem>
           <DropdownItem>
             <router-link :to="{path:'/user/center'}">个人中心</router-link>
           </DropdownItem>
@@ -55,14 +49,12 @@
           </DropdownItem>
         </DropdownMenu>
       </Dropdown>
-      </Col>
-
-    </Row>
+    </div>
   </Header>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapGetters,mapActions } from "vuex";
 
 export default {
   name: "MainHeader",
@@ -76,9 +68,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapState({
-      userRoleName: state => state.user.userInfo.roleName || ""
-    }),
+    ...mapGetters(['userInfo']),
     isCollapsed() {
       return this.isSiderCollapsed;
     }

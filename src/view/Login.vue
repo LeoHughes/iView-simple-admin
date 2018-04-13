@@ -84,10 +84,14 @@ export default {
             passWord: this.formData.passWord
           });
 
-          if (!this.userInfo.error) {
+          if (this.userInfo && !this.userInfo.error) {
             this.$router.push({ path: "/" });
           } else {
-            this.$Message.error(this.userInfo.error.message);
+
+            let msg = this.userInfo !== null ? this.userInfo.error.message : '登录失败，请稍后再试!！';
+
+            this.$Message.error(msg);
+            this.loading = !this.loading;
           }
         }
       });
