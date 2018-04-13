@@ -6,6 +6,7 @@ import iView from 'iview'
 import store from './store/index'
 import App from './App'
 
+import 'animate.css/animate.min.css'
 import 'iview/dist/styles/iview.css'
 
 Vue.use(iView)
