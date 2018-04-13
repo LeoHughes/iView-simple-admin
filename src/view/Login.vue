@@ -4,7 +4,7 @@
 
       <section class="formContent">
         <h1 class="title">Login in Management</h1>
-        <Form class="formBody" ref="formData" :model="formData" label-position="left" :rules="validate">
+        <Form class="formBody" ref="form" :model="formData" label-position="left" :rules="validate">
           <FormItem label="Account" prop="userName">
             <Row>
               <Col span="24">
@@ -74,8 +74,8 @@ export default {
   },
   methods: {
     ...mapActions(["login"]),
-    formSumbit(name) {
-      this.$refs[name].validate(async valid => {
+    formSumbit() {
+      this.$refs.form.validate(async valid => {
         if (valid) {
           this.loading = !this.loading;
 
@@ -93,7 +93,7 @@ export default {
       });
     },
     formRest() {
-      this.$router.push({ path: "/" });
+      this.$refs.form.resetFields();
     }
   }
 };
