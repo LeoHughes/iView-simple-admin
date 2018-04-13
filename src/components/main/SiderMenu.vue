@@ -37,7 +37,7 @@
           <span class="title">{{ item.title }}</span>
         </template>
         <router-link v-for="(child,i) in item.children" :key="i" :to="{path: child.path }">
-          <MenuItem :name="child.name" @click.native="addOpenTab(child)">{{ child.title }}</MenuItem>
+          <MenuItem :name="child.name" @click.native="updateTabs(child,0)">{{ child.title }}</MenuItem>
         </router-link>
       </Submenu>
 
@@ -108,9 +108,11 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.loading = !this.loading;
-    }, 1500);
+    this.$nextTick(()=>{
+      setTimeout(() => {
+        this.loading = !this.loading;
+      }, 1500);
+    })
   },
   methods: {
     ...mapMutations(["clearUserInfo", "updateOpenTabs", "updateActiveTab"]),
@@ -126,8 +128,9 @@ export default {
         this.toggleSider();
       }
     },
-    addOpenTab(tabObj) {
-      this.updateOpenTabs({ type: 0, tabObj });
+    //增加激活菜单tab
+    updateTabs(tabObj,type) {
+      this.updateOpenTabs({ type, tabObj });
     }
   }
 };

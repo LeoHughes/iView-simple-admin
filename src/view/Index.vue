@@ -39,7 +39,6 @@
 </template>
 
 <script>
-import "@/style/Index.less";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 import SiderMenu from "@/components/main/SiderMenu";
@@ -55,7 +54,6 @@ export default {
   },
   data() {
     return {
-      loading:true,
       isSiderCollapsed: false, //是否收起边栏
     };
   },
@@ -64,14 +62,6 @@ export default {
     mainCss() {
       return ["main", this.isSiderCollapsed ? "main-collapse" : ""];
     }
-  },
-  // beforeMount() {
-  //   this.$Spin.show();
-  // },
-  updated() {
-    setTimeout(() => {
-      this.loading = !this.loading;
-    },1500)
   },
   methods: {
     ...mapActions(["loginOut"]),
