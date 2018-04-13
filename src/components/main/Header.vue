@@ -17,8 +17,8 @@
     top: 0;
     right: 50px;
 
-    .avatar{
-      &:hover{
+    .avatar {
+      &:hover {
         cursor: pointer;
       }
     }
@@ -54,7 +54,7 @@
 </template>
 
 <script>
-import { mapGetters,mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "MainHeader",
@@ -68,7 +68,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(['userInfo']),
+    ...mapGetters(["userInfo"]),
     isCollapsed() {
       return this.isSiderCollapsed;
     }

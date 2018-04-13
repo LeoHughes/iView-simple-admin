@@ -6,12 +6,18 @@
   border-radius: 4px;
   overflow: hidden;
 
-  .main{
+  .main {
     margin-left: 205px;
 
-    &-collapse{
+    &-collapse {
       margin-left: 80px;
       transition: margin 0.4s ease;
+    }
+
+    .tabs{
+      width: 100%;
+      padding: 10px;
+      text-align: left;
     }
   }
 }
@@ -30,6 +36,12 @@
       <MainHeader :isSiderCollapsed="isSiderCollapsed" @toggleSiderMenu="toggleSiderMenu"></MainHeader>
       <!-- 头部 end-->
 
+      <div class="tabs">
+        <router-link v-for="(item,i) in openTabs" :key="i" :to="{path:item.path}">
+          <Tag type="dot" closable :color="activeTab === item.name ? 'blue':''" @click.native="changeTab(item.name)">{{ item.title }}</Tag>
+        </router-link>
+      </div>
+
       <!-- content -->
       <MainContent></MainContent>
       <!-- content end-->
@@ -43,7 +55,7 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 
 import SiderMenu from "@/components/main/SiderMenu";
 import MainHeader from "@/components/main/Header";
-import MainContent from '@/components/main/Content';
+import MainContent from "@/components/main/Content";
 
 export default {
   name: "Index",
@@ -54,16 +66,17 @@ export default {
   },
   data() {
     return {
-      isSiderCollapsed: false, //是否收起边栏
+      isSiderCollapsed: false //是否收起边栏
     };
   },
   computed: {
-    ...mapGetters(["token", "userInfo"]),
+    ...mapGetters(["token", "userInfo","openTabs","activeTab"]),
     mainCss() {
       return ["main", this.isSiderCollapsed ? "main-collapse" : ""];
     }
   },
   methods: {
+    ...mapMutations(["updateActiveTab"]),
     ...mapActions(["loginOut"]),
     changeSiderCollapsed() {
       this.isSiderCollapsed = !this.isSiderCollapsed;
@@ -72,6 +85,10 @@ export default {
     toggleSiderMenu() {
       this.changeSiderCollapsed();
       this.$refs.siderMenu.toggleSider();
+    },
+    //tab切换
+    changeTab(tabName){
+      this.updateActiveTab(tabName);
     }
   }
 };

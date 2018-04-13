@@ -29,7 +29,7 @@
     </div>
     <!-- logo end-->
 
-    <Menu ref="leftMenu" v-show="!isCollapsed && !loading" accordion :open-names="[activeName]" :active-name="$route.name" theme="dark" width="auto" @on-select="resetSider">
+    <Menu ref="leftMenu" v-show="!isCollapsed && !loading" accordion :open-names="['Test']" :active-name="$route.name" theme="dark" width="auto" @on-select="resetSider">
 
       <Submenu v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
         <template slot="title">
@@ -43,7 +43,7 @@
 
     </Menu>
 
-    <Menu ref="leftMenu" v-show="isCollapsed && !loading" accordion :open-names="[activeName]" :active-name="$route.name" theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''" @on-select="resetSider">
+    <Menu ref="leftMenuMini" v-show="isCollapsed && !loading" accordion :active-name="$route.name" theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''" @on-select="resetSider">
 
       <MenuItem v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
       <Icon :type="item.icon"></Icon>
@@ -68,6 +68,7 @@ export default {
   data() {
     return {
       loading: true,
+      openName:'',//展开的菜单
     };
   },
   computed: {
@@ -77,15 +78,18 @@ export default {
     },
     mainCss() {
       return ["main", this.isCollapsed ? "main-collapse" : ""];
-    },
-    activeName() {
-      return this.activeTab !== null ? this.activeTab.parentName : "";
     }
   },
   watch: {
-    activeName() {
+    activeTab() {
       //左侧菜单展开
       this.$nextTick(() => {
+
+        if(this.isCollapsed){
+          this.$refs.leftMenuMini.updateOpened();
+          this.$refs.leftMenuMini.updateActiveName();
+        }
+
         this.$refs.leftMenu.updateOpened();
         this.$refs.leftMenu.updateActiveName();
       });
@@ -131,6 +135,7 @@ export default {
     //增加激活菜单tab
     updateTabs(tabObj,type) {
       this.updateOpenTabs({ type, tabObj });
+      this.updateActiveTab(tabObj.name);
     }
   }
 };
