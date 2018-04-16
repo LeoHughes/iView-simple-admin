@@ -2,18 +2,18 @@
 .logo {
   width: 100%;
   height: 80px;
-  padding:10px 0;
+  padding: 10px 0;
   background: transparent;
   border-radius: 3px;
 
-  img{
+  img {
     max-width: 100%;
     max-height: 100%;
   }
 
-  &.mini{
-    height:40px;
-    padding:5px 0;
+  &.mini {
+    height: 40px;
+    padding: 5px 0;
   }
 }
 </style>
@@ -29,21 +29,21 @@
     </div>
     <!-- logo end-->
 
-    <Menu ref="leftMenu" v-show="!isCollapsed && !loading" accordion :open-names="['Test']" :active-name="$route.name" theme="dark" width="auto" @on-select="resetSider">
+    <Menu ref="leftMenu" v-show="!isCollapsed && !loading" accordion :open-names="[activeMenuName]" :active-name="activeMenuItemName" theme="dark" width="auto" @on-select="resetSider">
 
       <Submenu v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
         <template slot="title">
           <Icon :type="item.icon"></Icon>
           <span class="title">{{ item.title }}</span>
         </template>
-        <router-link v-for="(child,i) in item.children" :key="i" :to="{path: child.path }">
+        <router-link v-show="!isCollapsed" v-for="(child,i) in item.children" :key="i" :to="{path: child.path }">
           <MenuItem :name="child.name" @click.native="updateTabs(child,0)">{{ child.title }}</MenuItem>
         </router-link>
       </Submenu>
 
     </Menu>
 
-    <Menu ref="leftMenuMini" v-show="isCollapsed && !loading" accordion :active-name="$route.name" theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''" @on-select="resetSider">
+    <Menu ref="leftMenuMini" v-show="isCollapsed && !loading" accordion :active-name="activeMenuName" theme="dark" width="auto" :class="isCollapsed ? 'miniMenu':''" @on-select="resetSider">
 
       <MenuItem v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
       <Icon :type="item.icon"></Icon>
@@ -55,6 +55,7 @@
 </template>
 
 <script>
+import _ from "lodash";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {
@@ -68,7 +69,6 @@ export default {
   data() {
     return {
       loading: true,
-      openName:'',//展开的菜单
     };
   },
   computed: {
@@ -76,22 +76,18 @@ export default {
     isCollapsed() {
       return this.isSiderCollapsed;
     },
-    mainCss() {
-      return ["main", this.isCollapsed ? "main-collapse" : ""];
+    activeMenuName() {
+      return this.activeTab !== null ? this.activeTab.parentName : "";
+    },
+    activeMenuItemName() {
+      return this.activeTab !== null ? this.activeTab.name : this.$route.name;
     }
   },
   watch: {
     activeTab() {
       //左侧菜单展开
       this.$nextTick(() => {
-
-        if(this.isCollapsed){
-          this.$refs.leftMenuMini.updateOpened();
-          this.$refs.leftMenuMini.updateActiveName();
-        }
-
-        this.$refs.leftMenu.updateOpened();
-        this.$refs.leftMenu.updateActiveName();
+        this.updateOpenedAndActiveName();
       });
     }
   },
@@ -112,11 +108,11 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(()=>{
+    this.$nextTick(() => {
       setTimeout(() => {
         this.loading = !this.loading;
       }, 1500);
-    })
+    });
   },
   methods: {
     ...mapMutations(["clearUserInfo", "updateOpenTabs", "updateActiveTab"]),
@@ -124,6 +120,16 @@ export default {
     //收起边栏
     toggleSider() {
       this.$refs.sider.toggleCollapse();
+    },
+    //更新边栏菜单选中和打开状态
+    updateOpenedAndActiveName() {
+      if (this.isCollapsed) {
+        this.$refs.leftMenuMini.updateOpened();
+        this.$refs.leftMenuMini.updateActiveName();
+      }
+
+      this.$refs.leftMenu.updateOpened();
+      this.$refs.leftMenu.updateActiveName();
     },
     //边栏收起状态下点击菜单图标则展开
     resetSider() {
@@ -133,9 +139,9 @@ export default {
       }
     },
     //增加激活菜单tab
-    updateTabs(tabObj,type) {
+    updateTabs(tabObj, type) {
       this.updateOpenTabs({ type, tabObj });
-      this.updateActiveTab(tabObj.name);
+      this.updateActiveTab(tabObj);
     }
   }
 };

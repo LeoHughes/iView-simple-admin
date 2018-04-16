@@ -14,7 +14,7 @@
       transition: margin 0.4s ease;
     }
 
-    .tabs{
+    .tabs {
       width: 100%;
       padding: 10px;
       text-align: left;
@@ -37,9 +37,8 @@
       <!-- 头部 end-->
 
       <div class="tabs">
-        <router-link v-for="(item,i) in openTabs" :key="i" :to="{path:item.path}">
-          <Tag type="dot" closable :color="activeTab === item.name ? 'blue':''" @click.native="changeTab(item.name)">{{ item.title }}</Tag>
-        </router-link>
+          <Tag v-for="(item,i) in openTabs" :key="i" type="dot" closable :color="activeName === item.name ? 'blue':''" @click.native="changeTab(item)" @on-close="delTab(item,1)">{{ item.title }}
+          </Tag>
       </div>
 
       <!-- content -->
@@ -70,13 +69,36 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["token", "userInfo","openTabs","activeTab"]),
+    ...mapGetters([
+      "token",
+      "userInfo",
+      "menuItemList",
+      "openTabs",
+      "activeTab"
+    ]),
     mainCss() {
       return ["main", this.isSiderCollapsed ? "main-collapse" : ""];
+    },
+    activeName() {
+      return this.activeTab !== null ? this.activeTab.name : "";
+    }
+  },
+  watch: {
+    openTabs() {
+      if (this.openTabs.length == 0) this.$router.push({ path: "/" });
+    },
+    $route(to) {
+      if (!this.activeTab || to.name !== this.activeTab.name) {
+        let tabObj = this.menuItemList.find(el => {
+          return el.name === to.name;
+        });
+
+        this.$refs.siderMenu.updateTabs(tabObj, 0);
+      }
     }
   },
   methods: {
-    ...mapMutations(["updateActiveTab"]),
+    ...mapMutations(["updateOpenTabs", "updateActiveTab"]),
     ...mapActions(["loginOut"]),
     changeSiderCollapsed() {
       this.isSiderCollapsed = !this.isSiderCollapsed;
@@ -87,8 +109,15 @@ export default {
       this.$refs.siderMenu.toggleSider();
     },
     //tab切换
-    changeTab(tabName){
-      this.updateActiveTab(tabName);
+    changeTab(tab) {
+      this.updateActiveTab(tab);
+
+      this.$router.push({path:tab.path});
+    },
+    //关闭已激活的tab
+    delTab(tabObj, type) {
+      this.updateOpenTabs({ tabObj, type });
+      this.$router.push({path:this.activeTab.path});
     }
   }
 };
