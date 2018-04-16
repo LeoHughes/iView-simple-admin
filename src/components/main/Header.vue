@@ -34,15 +34,15 @@
 
     <div class="header-control">
       <Dropdown>
-        <Badge count="100" overflow-count="999">
+        <Badge :count="messageCount" overflow-count="100">
           <Avatar class="avatar" size="large" :src="userInfo.avatar || ''"></Avatar>
         </Badge>
         <DropdownMenu slot="list">
           <DropdownItem>
-            <router-link :to="{path:'/message'}">未读消息</router-link>
+            <p @click="linkTo({path:'/message',name:'Message',title:'未读消息'})">未读消息</p>
           </DropdownItem>
           <DropdownItem>
-            <router-link :to="{path:'/user/center'}">个人中心</router-link>
+            <p @click="linkTo({path:'user/Center',name:'UserCenter',title:'个人中心'})">个人中心</p>
           </DropdownItem>
           <DropdownItem>
             <p @click="userLoginOut">退出</p>
@@ -68,13 +68,16 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["userInfo"]),
+    ...mapGetters(["token","userInfo","messageCount"]),
     isCollapsed() {
       return this.isSiderCollapsed;
     }
   },
+  async beforeMount(){
+    this.getMessages(this.token);
+  },
   methods: {
-    ...mapActions(["loginOut"]),
+    ...mapActions(["loginOut","getMessages"]),
     //收起边栏
     toggleSiderMenu() {
       this.$emit("toggleSiderMenu");
@@ -83,6 +86,12 @@ export default {
     userLoginOut() {
       this.loginOut();
       this.$router.push({ path: "/login" });
+    },
+    //跳转
+    linkTo(tabObj){
+      this.$router.push({path:tabObj.path});
+      // this.$refs.siderMenu.updateTabs(tabObj, 0);
+      this.$emit('addTab',tabObj);
     }
   }
 };

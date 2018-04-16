@@ -33,7 +33,7 @@
 
     <Layout :class="mainCss">
       <!-- 头部 -->
-      <MainHeader :isSiderCollapsed="isSiderCollapsed" @toggleSiderMenu="toggleSiderMenu"></MainHeader>
+      <MainHeader :isSiderCollapsed="isSiderCollapsed" @toggleSiderMenu="toggleSiderMenu" @addTab="addTab"></MainHeader>
       <!-- 头部 end-->
 
       <div class="tabs">
@@ -87,15 +87,6 @@ export default {
     openTabs() {
       if (this.openTabs.length == 0) this.$router.push({ path: "/" });
     },
-    $route(to) {
-      if (!this.activeTab || to.name !== this.activeTab.name) {
-        let tabObj = this.menuItemList.find(el => {
-          return el.name === to.name;
-        });
-
-        this.$refs.siderMenu.updateTabs(tabObj, 0);
-      }
-    }
   },
   methods: {
     ...mapMutations(["updateOpenTabs", "updateActiveTab"]),
@@ -117,7 +108,13 @@ export default {
     //关闭已激活的tab
     delTab(tabObj, type) {
       this.updateOpenTabs({ tabObj, type });
-      this.$router.push({path:this.activeTab.path});
+
+      let path = this.activeTab !== null ? this.activeTab.path : '/';
+      this.$router.push({path});
+    },
+    //增加激活的tab
+    addTab(tabObj){
+      this.$refs.siderMenu.updateTabs(tabObj, 0);
     }
   }
 };

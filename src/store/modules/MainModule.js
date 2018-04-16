@@ -6,7 +6,6 @@ import { Message } from 'iview'
 export default {
   state: {
     mainLeftMenu: null, //主页面左侧菜单数据
-    menuItemList: [], //左侧菜单所有可访问子菜单数据
     openTabs: [], //激活的左侧菜单页
     activeTab: null, //当前查看的左侧菜单页
   },
@@ -77,18 +76,6 @@ export default {
         const { code, content } = data
 
         code == '200' ? commit('changeMainLeftMenu', content) : commit('clearMainLeftMenuData')
-
-        let menuItemList = []
-
-        content.forEach(el => {
-          if (el.children.length !== 0) {
-            el.children.forEach(item => {
-              menuItemList.push(item)
-            })
-          }
-        })
-
-        commit('changeMenuItemList', menuItemList)
 
       } catch (error) {
 
