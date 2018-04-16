@@ -6,12 +6,16 @@ import { Message } from 'iview'
 export default {
   state: {
     mainLeftMenu: null, //主页面左侧菜单数据
+    menuItemList: [], //左侧菜单所有可访问子菜单数据
     openTabs: [], //激活的左侧菜单页
     activeTab: null, //当前查看的左侧菜单页
   },
   getters: {
     mainLeftMenu(state) {
       return state.mainLeftMenu
+    },
+    menuItemList(state) {
+      return state.menuItemList
     },
     openTabs(state) {
       return state.openTabs
@@ -27,13 +31,33 @@ export default {
     clearMainLeftMenuData(state) {
       state.mainLeftMenu = null
     },
+    //所有可访问子菜单数据
+    changeMenuItemList(state, payload) {
+      state.menuItemList = payload
+    },
     //更新激活的左侧菜单页数据 type: 0新增1删除2删除全部
     updateOpenTabs(state, { type, tabObj }) {
+      let index = _.findIndex(state.openTabs, tabObj)
 
       switch (type) {
         case 0:
-          if (_.findIndex(state.openTabs, tabObj) == -1) {
+          if (index == -1) {
             state.openTabs.push(tabObj)
+          }
+          break
+        case 1:
+          if (index !== -1) {
+            state.openTabs.splice(index, 1)
+
+            if (state.openTabs.length !== 0) {
+
+              let preTab = state.openTabs[state.openTabs.length - 1]
+
+              if (preTab.name !== state.activeTab.name) state.activeTab = preTab
+
+            } else {
+              state.activeTab = null
+            }
           }
           break
       }
@@ -53,6 +77,18 @@ export default {
         const { code, content } = data
 
         code == '200' ? commit('changeMainLeftMenu', content) : commit('clearMainLeftMenuData')
+
+        let menuItemList = []
+
+        content.forEach(el => {
+          if (el.children.length !== 0) {
+            el.children.forEach(item => {
+              menuItemList.push(item)
+            })
+          }
+        })
+
+        commit('changeMenuItemList', menuItemList)
 
       } catch (error) {
 
