@@ -56,7 +56,6 @@
 import _ from 'lodash';
 
 import { mapGetters, mapMutations, mapActions } from "vuex";
-import { whiteList } from "@/router/util";
 
 import SiderMenu from "@/components/main/SiderMenu";
 import MainHeader from "@/components/main/Header";
@@ -99,9 +98,7 @@ export default {
         return el.name === newTabObj.name;
       });
 
-      console.log(from)
-
-      if (!inTabObj && _.findIndex(whiteList, newTabObj.path) == -1) {
+      if (!inTabObj) {
         this.$refs.siderMenu.updateTabs(newTabObj, 0);
       } else {
         this.updateActiveTab(inTabObj);
