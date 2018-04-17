@@ -37,8 +37,11 @@
       <!-- 头部 end-->
 
       <div class="tabs">
-          <Tag v-for="(item,i) in openTabs" :key="i" type="dot" closable :color="activeName === item.name ? 'blue':''" @click.native="changeTab(item)" @on-close="delTab(item,1)">{{ item.title }}
+        <template v-for="(item,i) in openTabs">
+          <Tag type="dot" :closable="item.path !== '/'" :color="activeName === item.title ? 'blue':''" @click.native="changeTab(item)" @on-close="delTab(item,1)">
+            {{ item.title }}
           </Tag>
+        </template>
       </div>
 
       <!-- content -->
@@ -50,7 +53,10 @@
 </template>
 
 <script>
+import _ from 'lodash';
+
 import { mapGetters, mapMutations, mapActions } from "vuex";
+import { whiteList } from "@/router/util";
 
 import SiderMenu from "@/components/main/SiderMenu";
 import MainHeader from "@/components/main/Header";
@@ -69,24 +75,40 @@ export default {
     };
   },
   computed: {
-    ...mapGetters([
-      "token",
-      "userInfo",
-      "menuItemList",
-      "openTabs",
-      "activeTab"
-    ]),
+    ...mapGetters(["token", "userInfo", "openTabs", "activeTab"]),
     mainCss() {
       return ["main", this.isSiderCollapsed ? "main-collapse" : ""];
     },
     activeName() {
-      return this.activeTab !== null ? this.activeTab.name : "";
+      return this.activeTab !== null ? this.activeTab.title : "";
     }
   },
   watch: {
     openTabs() {
       if (this.openTabs.length == 0) this.$router.push({ path: "/" });
     },
+    $route(to,from) {
+      let newTabObj = {
+        path: to.path,
+        name: to.name,
+        title: to.meta.title,
+        parentName: to.parentName
+      };
+
+      let inTabObj = this.openTabs.find(el => {
+        return el.name === newTabObj.name;
+      });
+
+      console.log(from)
+
+      if (!inTabObj && _.findIndex(whiteList, newTabObj.path) == -1) {
+        this.$refs.siderMenu.updateTabs(newTabObj, 0);
+      } else {
+        this.updateActiveTab(inTabObj);
+      }
+
+      this.$refs.siderMenu.updateOpenedAndActiveName();
+    }
   },
   methods: {
     ...mapMutations(["updateOpenTabs", "updateActiveTab"]),
@@ -103,17 +125,17 @@ export default {
     changeTab(tab) {
       this.updateActiveTab(tab);
 
-      this.$router.push({path:tab.path});
+      this.$router.push({ path: tab.path });
     },
     //关闭已激活的tab
     delTab(tabObj, type) {
       this.updateOpenTabs({ tabObj, type });
 
-      let path = this.activeTab !== null ? this.activeTab.path : '/';
-      this.$router.push({path});
+      let path = this.activeTab !== null ? this.activeTab.path : "/";
+      this.$router.push({ path });
     },
     //增加激活的tab
-    addTab(tabObj){
+    addTab(tabObj) {
       this.$refs.siderMenu.updateTabs(tabObj, 0);
     }
   }

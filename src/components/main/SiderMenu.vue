@@ -29,16 +29,14 @@
     </div>
     <!-- logo end-->
 
-    <Menu ref="leftMenu" v-show="!isCollapsed && !loading" accordion :open-names="[activeMenuName]" :active-name="activeMenuItemName" theme="dark" width="auto" @on-select="resetSider">
+    <Menu ref="leftMenu" v-show="!isCollapsed && !loading" :open-names="[activeMenuName]" :active-name="activeMenuItemName" theme="dark" width="auto" @on-select="resetSider">
 
       <Submenu v-for="(item,i) in mainLeftMenu" :key="i" :name="item.name">
         <template slot="title">
           <Icon :type="item.icon"></Icon>
           <span class="title">{{ item.title }}</span>
         </template>
-        <router-link v-show="!isCollapsed" v-for="(child,i) in item.children" :key="i" :to="{path: child.path }">
-          <MenuItem :name="child.name" @click.native="updateTabs(child,0)">{{ child.title }}</MenuItem>
-        </router-link>
+          <MenuItem v-show="!isCollapsed" v-for="(child,i) in item.children" :key="i" :name="child.name" @click.native="updateTabs(child,0)">{{ child.title }}</MenuItem>
       </Submenu>
 
     </Menu>
@@ -140,6 +138,8 @@ export default {
     },
     //增加激活菜单tab
     updateTabs(tabObj, type) {
+      this.$router.push({path:tabObj.path});
+
       this.updateOpenTabs({ type, tabObj });
       this.updateActiveTab(tabObj);
     }

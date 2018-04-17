@@ -35,14 +35,14 @@
     <div class="header-control">
       <Dropdown>
         <Badge :count="messageCount" overflow-count="100">
-          <Avatar class="avatar" size="large" :src="userInfo.avatar || ''"></Avatar>
+          <Avatar class="avatar" size="large" :src="avatarUrl"></Avatar>
         </Badge>
         <DropdownMenu slot="list">
           <DropdownItem>
-            <p @click="linkTo({path:'/message',name:'Message',title:'未读消息'})">未读消息</p>
+            <p @click="linkTo({path:'/message',name:'Message',title:'消息中心'})">消息中心</p>
           </DropdownItem>
           <DropdownItem>
-            <p @click="linkTo({path:'user/Center',name:'UserCenter',title:'个人中心'})">个人中心</p>
+            <p @click="linkTo({path:'/user/Center',name:'UserCenter',title:'个人中心'})">个人中心</p>
           </DropdownItem>
           <DropdownItem>
             <p @click="userLoginOut">退出</p>
@@ -71,6 +71,9 @@ export default {
     ...mapGetters(["token","userInfo","messageCount"]),
     isCollapsed() {
       return this.isSiderCollapsed;
+    },
+    avatarUrl(){
+      return this.userInfo !== null ? this.userInfo.avatar : '';
     }
   },
   async beforeMount(){
