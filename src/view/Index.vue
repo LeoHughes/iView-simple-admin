@@ -1,24 +1,21 @@
 <style lang="less" scoped>
 .layout {
+  position: absolute;
+  width: 100%;
+  height:100%;
   border: 1px solid #d7dde4;
   background: #f5f7f9;
-  position: relative;
   border-radius: 4px;
   overflow: hidden;
 
   .main {
-    margin-left: 205px;
+    margin-left: 200px;
 
     &-collapse {
       margin-left: 80px;
       transition: margin 0.4s ease;
     }
 
-    .tabs {
-      width: 100%;
-      padding: 10px;
-      text-align: left;
-    }
   }
 }
 </style>
@@ -36,16 +33,12 @@
       <MainHeader :isSiderCollapsed="isSiderCollapsed" @toggleSiderMenu="toggleSiderMenu" @addTab="addTab"></MainHeader>
       <!-- 头部 end-->
 
-      <div class="tabs">
-        <template v-for="(item,i) in openTabs">
-          <Tag type="dot" :closable="item.path !== '/'" :color="activeName === item.title ? 'blue':''" @click.native="changeTab(item)" @on-close="delTab(item,1)">
-            {{ item.title }}
-          </Tag>
-        </template>
-      </div>
+      <!-- 导航tab -->
+      <Tab></Tab>
+      <!-- 导航tab end -->
 
       <!-- content -->
-      <MainContent></MainContent>
+      <MainContent :isSiderCollapsed="isSiderCollapsed"></MainContent>
       <!-- content end-->
     </Layout>
 
@@ -59,6 +52,7 @@ import { mapGetters, mapMutations, mapActions } from "vuex";
 
 import SiderMenu from "@/components/main/SiderMenu";
 import MainHeader from "@/components/main/Header";
+import Tab from '@/components/main/Tab'
 import MainContent from "@/components/main/Content";
 
 export default {
@@ -66,6 +60,7 @@ export default {
   components: {
     SiderMenu,
     MainHeader,
+    Tab,
     MainContent
   },
   data() {
@@ -77,9 +72,6 @@ export default {
     ...mapGetters(["token", "userInfo", "openTabs", "activeTab"]),
     mainCss() {
       return ["main", this.isSiderCollapsed ? "main-collapse" : ""];
-    },
-    activeName() {
-      return this.activeTab !== null ? this.activeTab.title : "";
     }
   },
   watch: {
@@ -117,22 +109,6 @@ export default {
     toggleSiderMenu() {
       this.changeSiderCollapsed();
       this.$refs.siderMenu.toggleSider();
-    },
-    //tab切换
-    changeTab(tab) {
-      if(tab.path === '/'){
-        this.$router.push({path:'/home'});
-      }else{
-        this.updateActiveTab(tab);
-        this.$router.push({ path: tab.path });
-      }
-    },
-    //关闭已激活的tab
-    delTab(tabObj, type) {
-      this.updateOpenTabs({ tabObj, type });
-
-      let path = this.activeTab !== null ? this.activeTab.path : "/";
-      this.$router.push({ path });
     },
     //增加激活的tab
     addTab(tabObj) {

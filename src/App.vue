@@ -5,8 +5,24 @@
 </template>
 
 <script>
+import { mapMutations } from 'vuex';
+
 export default {
-  name: 'App'
+  name: 'App',
+  watch:{
+    $route(to){
+      if(to.path === '/home'){
+        this.updateActiveTab({
+          name: to.name,
+          path: to.path,
+          title: to.meta.title
+        })
+      }
+    }
+  },
+  methods:{
+    ...mapMutations(["updateActiveTab"])
+  }
 }
 </script>
 

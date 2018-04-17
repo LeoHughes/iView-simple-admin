@@ -1,28 +1,43 @@
 <style lang="less" scoped>
 .content {
-  position: relative;
-  padding: 10px;
-  min-height: 50vh;
+  position: absolute;
+  top: 120px;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+  left: 200px;
+
+  &.mini{
+    left: 80px;
+    transition: left 0.4s ease;
+  }
 }
 </style>
 
 <template>
-  <Content class="content">
-    <Card dis-hover>
-      <router-view></router-view>
-    </Card>
+  <Content class="content" :class="{mini:isCollapsed}">
+    <router-view></router-view>
   </Content>
 </template>
 
 <script>
 export default {
   name: "MainContent",
-  data() {
-    return {
-      
-    };
+    props: {
+    isSiderCollapsed: {
+      type: Boolean,
+      default: false
+    }
   },
-  mounted(){
+  data() {
+    return {};
+  },
+  computed:{
+    isCollapsed() {
+      return this.isSiderCollapsed;
+    },
+  },
+  mounted() {
     this.loading = !this.loading;
   },
   methods: {}
