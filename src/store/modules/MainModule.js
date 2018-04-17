@@ -1,13 +1,20 @@
 import axios from "@/util/instance";
 import config from "@/config";
 import _ from "lodash";
-import { Message } from "iview";
 
 export default {
   state: {
     mainLeftMenu: null, //主页面左侧菜单数据
-    openTabs: [], //激活的左侧菜单页
-    activeTab: null //当前查看的左侧菜单页
+    openTabs: [{
+      path: "/",
+      name: "Home",
+      title: '主页'
+    }], //激活的左侧菜单页
+    activeTab: {
+      path: "/",
+      name: "Home",
+      title: '主页'
+    } //当前查看的左侧菜单页
   },
   getters: {
     mainLeftMenu(state) {
@@ -48,14 +55,14 @@ export default {
           if (index !== -1) {
             state.openTabs.splice(index, 1);
 
-            if (state.openTabs.length !== 0) {
-              if (_.findIndex(state.openTabs, state.activeTab) == -1) {
-                let preTab = state.openTabs[state.openTabs.length - 1];
+            if (_.findIndex(state.openTabs, state.activeTab) == -1 && state.openTabs.length !== 1) {
+              let preTab = state.openTabs[state.openTabs.length - 1];
 
-                if (preTab.name !== state.activeTab.name) state.activeTab = preTab;
+              if (preTab.name !== state.activeTab.name) {
+                state.activeTab = preTab;
               }
             } else {
-              state.activeTab = null;
+              state.activeTab = state.openTabs[0];
             }
           }
           break;

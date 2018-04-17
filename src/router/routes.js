@@ -31,11 +31,21 @@ export default [{
     name: "Index",
     meta: {
       requireAuth: true,
-      title: "主页"
+      title: "首页"
     },
+    redirect: '/home',
     component: () =>
       import ("@/view/Index"),
     children: [{
+        path: "/home",
+        name: "Home",
+        meta: {
+          requireAuth: true,
+          title: "主页"
+        },
+        component: () =>
+          import ("@/view/Home")
+      }, {
         path: "/test/1",
         name: "Test",
         meta: {
