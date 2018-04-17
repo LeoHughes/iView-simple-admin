@@ -86,7 +86,7 @@ export default {
     openTabs() {
       if (this.openTabs.length == 0) this.$router.push({ path: "/" });
     },
-    $route(to,from) {
+    $route(to) {
       let newTabObj = {
         path: to.path,
         name: to.name,
@@ -120,9 +120,12 @@ export default {
     },
     //tab切换
     changeTab(tab) {
-      this.updateActiveTab(tab);
-
-      this.$router.push({ path: tab.path });
+      if(tab.path === '/'){
+        this.$router.push({path:'/home'});
+      }else{
+        this.updateActiveTab(tab);
+        this.$router.push({ path: tab.path });
+      }
     },
     //关闭已激活的tab
     delTab(tabObj, type) {
