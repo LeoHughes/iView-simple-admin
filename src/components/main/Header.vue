@@ -68,7 +68,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["token","userInfo","messageCount"]),
+    ...mapGetters(["token","userInfo","messages","messageCount"]),
     isCollapsed() {
       return this.isSiderCollapsed;
     },
@@ -77,7 +77,7 @@ export default {
     }
   },
   async beforeMount(){
-    this.getMessages(this.token);
+    await this.getMessages(this.token);
   },
   methods: {
     ...mapActions(["loginOut","getMessages"]),
@@ -93,7 +93,6 @@ export default {
     //跳转
     linkTo(tabObj){
       this.$router.push({path:tabObj.path});
-      // this.$refs.siderMenu.updateTabs(tabObj, 0);
       this.$emit('addTab',tabObj);
     }
   }

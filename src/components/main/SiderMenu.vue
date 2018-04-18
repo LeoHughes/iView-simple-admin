@@ -92,18 +92,6 @@ export default {
   async beforeMount() {
     //获取菜单数据
     await this.getMainLeftMenu();
-
-    if (!this.mainLeftMenu || this.mainLeftMenu.length === 0) {
-      this.$Notice.error({
-        title: "错误信息",
-        desc: "获取左侧菜单失败,请稍后再试",
-        duration: 2,
-        onClose: () => {
-          this.$router.push({ path: "/login" });
-          this.clearUserInfo();
-        }
-      });
-    }
   },
   mounted() {
     this.$nextTick(() => {

@@ -46,8 +46,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
-
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 import SiderMenu from "@/components/main/SiderMenu";
