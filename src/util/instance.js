@@ -29,7 +29,7 @@ instance.interceptors.response.use(response => {
 
   if (response.status !== 200) {
 
-    notice({ desc: '数据请求失败，请稍后再试' });
+    notice();
 
   } else {
 
@@ -47,7 +47,9 @@ instance.interceptors.response.use(response => {
       })
 
     } else {
+
       return response;
+
     }
 
   }
