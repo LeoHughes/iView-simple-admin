@@ -5,6 +5,9 @@ import Router from '@/router/index'
 import config from '@/config'
 
 const notice = function({ desc = '数据请求失败，请稍后再试', cb = null }) {
+
+  Notice.destroy();
+
   Notice.error({
     title: '错误信息',
     desc: desc,
