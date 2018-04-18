@@ -87,10 +87,6 @@ export default {
           if (this.userInfo && !this.userInfo.error) {
             this.$router.push({ path: "/" });
           } else {
-
-            let msg = this.userInfo !== null ? this.userInfo.error.message : '登录失败，请稍后再试!！';
-
-            this.$Message.error(msg);
             this.loading = !this.loading;
           }
         }

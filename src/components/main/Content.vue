@@ -6,10 +6,10 @@
   bottom: 0;
   overflow: auto;
   left: 200px;
-
+  transition: left 0.4s ease;
+  
   &.mini{
     left: 80px;
-    transition: left 0.4s ease;
   }
 }
 </style>

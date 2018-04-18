@@ -20,7 +20,7 @@
 
 <template>
   <!-- 侧边栏 -->
-  <Sider ref="sider" collapsible hide-trigger :collapsed-width="80" breakpoint="md" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
+  <Sider ref="sider" collapsible hide-trigger :collapsed-width="80" breakpoint="md" :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto',transition:'width 0.8s ease'}">
     <Spin fix v-if="loading"></Spin>
 
     <!-- logo -->
@@ -36,7 +36,7 @@
           <Icon :type="item.icon"></Icon>
           <span class="title">{{ item.title }}</span>
         </template>
-          <MenuItem v-show="!isCollapsed" v-for="(child,i) in item.children" :key="i" :name="child.name" @click.native="updateTabs(child,0)">{{ child.title }}</MenuItem>
+        <MenuItem v-for="(child,i) in item.children" :key="i" :name="child.name" @click.native="updateTabs(child,0)">{{ child.title }}</MenuItem>
       </Submenu>
 
     </Menu>
@@ -92,6 +92,8 @@ export default {
   async beforeMount() {
     //获取菜单数据
     await this.getMainLeftMenu();
+
+    if(!this.mainLeftMenu) location.reload()
   },
   mounted() {
     this.$nextTick(() => {
@@ -122,6 +124,8 @@ export default {
       if (this.isCollapsed) {
         this.$emit("changeSiderStatus");
         this.toggleSider();
+
+        this.updateOpenedAndActiveName();
       }
     },
     //增加激活菜单tab
