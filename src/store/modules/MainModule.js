@@ -20,9 +20,6 @@ export default {
     mainLeftMenu(state) {
       return state.mainLeftMenu;
     },
-    menuItemList(state) {
-      return state.menuItemList;
-    },
     openTabs(state) {
       return state.openTabs;
     },
