@@ -21,16 +21,15 @@ export default {
       state.messageCount = count;
     },
     clearMessages(state) {
-      state.messages = [];
+      state.messages = null;
       state.messageCount = 0;
     }
   },
   actions: {
-    async getMessages({ dispatch, commit }, { token, type }) {
+    async getMessages({ dispatch, commit }, { token }) {
       try {
         const param = {
-          token,
-          type
+          token
         };
 
         const { data } = await axios.post(config.getMessages, qs.stringify(param));

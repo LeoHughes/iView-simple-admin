@@ -37,10 +37,6 @@ export default {
     clearMainLeftMenuData(state) {
       state.mainLeftMenu = null;
     },
-    //所有可访问子菜单数据
-    changeMenuItemList(state, payload) {
-      state.menuItemList = payload;
-    },
     //更新激活的左侧菜单页数据 type: 0新增1删除2删除全部
     updateOpenTabs(state, { type, tabObj }) {
       let index = _.findIndex(state.openTabs, tabObj);
@@ -55,14 +51,12 @@ export default {
           if (index !== -1) {
             state.openTabs.splice(index, 1);
 
-            if (_.findIndex(state.openTabs, state.activeTab) == -1 && state.openTabs.length !== 1) {
+            if (_.findIndex(state.openTabs, state.activeTab) == -1) {
               let preTab = state.openTabs[state.openTabs.length - 1];
 
               if (preTab.name !== state.activeTab.name) {
                 state.activeTab = preTab;
               }
-            } else {
-              state.activeTab = state.openTabs[0];
             }
           }
           break;
