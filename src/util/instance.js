@@ -4,6 +4,14 @@ import Store from '@/store/index'
 import Router from '@/router/index'
 import config from '@/config'
 
+const notice = function({ desc = '数据请求失败，请稍后再试', cb = null }) {
+  Notice.error({
+    title: '错误信息',
+    desc: desc,
+    duration: 3,
+    onClose: cb
+  })
+}
 
 const token = localStorage.getItem(config.token)
 
@@ -21,10 +29,7 @@ instance.interceptors.response.use(response => {
 
   if (response.status !== 200) {
 
-    Notice.error({
-      title: '错误信息',
-      desc: '数据请求失败，请稍后再试'
-    })
+    notice({ desc: '数据请求失败，请稍后再试' });
 
   } else {
 
@@ -34,10 +39,9 @@ instance.interceptors.response.use(response => {
     if (data.code == '403' || data.code == '500') {
       Store.dispatch('loginOut');
 
-      Notice.error({
-        title: '错误信息',
+      notice({
         desc: '登录信息失效，请重新登录！',
-        onClose: () => {
+        cb: () => {
           Router.push('/login')
         }
       })
@@ -47,6 +51,12 @@ instance.interceptors.response.use(response => {
     }
 
   }
+
+}, error => {
+
+  notice({
+    desc: '网络请求响应超时，请稍后再试！'
+  })
 
 })
 
