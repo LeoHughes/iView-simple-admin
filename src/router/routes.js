@@ -46,7 +46,7 @@ export default [{
         component: () =>
           import ("@/view/Home")
       }, {
-        path: "/test/1",
+        path: "/test",
         name: "Test",
         meta: {
           requireAuth: true,
@@ -56,7 +56,7 @@ export default [{
           import ("@/view/Test/Test")
       },
       {
-        path: "/test/2",
+        path: "/test/child",
         name: "TestChild",
         meta: {
           requireAuth: true,
