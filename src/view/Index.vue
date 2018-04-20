@@ -1,10 +1,11 @@
 <style lang="less" scoped>
+@import url('../assets/style/variable.less');
+
 .layout {
   position: absolute;
   width: 100%;
   height:100%;
-  border: 1px solid #d7dde4;
-  background: #f5f7f9;
+  background: @layout-bg;
   border-radius: 4px;
   overflow: hidden;
 

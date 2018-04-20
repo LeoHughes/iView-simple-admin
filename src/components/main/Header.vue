@@ -1,4 +1,6 @@
 <style lang="less" scoped>
+@import url('../../assets/style/variable.less');
+
 .header-bar {
   position: relative;
   background: #fff;
@@ -7,8 +9,12 @@
     position: absolute;
     top: 0;
     left: 20px;
-    &:hover {
-      cursor: pointer;
+
+    button{
+      &:hover,&:focus{
+        box-shadow: none;
+        color: @dark;
+      }
     }
   }
 
@@ -22,6 +28,16 @@
         cursor: pointer;
       }
     }
+
+    .dropdownMenu-item{
+      padding:0 0;
+
+      p{
+        padding: 10px 6px;
+      }
+    }
+    
+
   }
 }
 </style>
@@ -29,7 +45,9 @@
 <template>
   <Header class="header-bar">
     <div class="collapsible-icon">
-      <Icon :type="isCollapsed ? 'chevron-right' : 'chevron-left'" size="20" @click.native="toggleSiderMenu"></Icon>
+      <Button type="text" @click.native="toggleSiderMenu">
+        <Icon :type="isCollapsed ? 'toggle-filled' : 'toggle'" size="34"></Icon>
+      </Button>
     </div>
 
     <div class="header-control">
@@ -38,13 +56,13 @@
           <Avatar class="avatar" size="large" :src="avatarUrl"></Avatar>
         </Badge>
         <DropdownMenu slot="list">
-          <DropdownItem>
+          <DropdownItem class="dropdownMenu-item">
             <p @click="linkTo({path:'/message',name:'Message',title:'消息中心'})">消息中心</p>
           </DropdownItem>
-          <DropdownItem>
-            <p @click="linkTo({path:'/user/Center',name:'UserCenter',title:'个人中心'})">个人中心</p>
+          <DropdownItem class="dropdownMenu-item">
+            <p @click="linkTo({path:'/user/center',name:'UserCenter',title:'个人中心'})">个人中心</p>
           </DropdownItem>
-          <DropdownItem>
+          <DropdownItem class="dropdownMenu-item">
             <p @click="userLoginOut">退出</p>
           </DropdownItem>
         </DropdownMenu>

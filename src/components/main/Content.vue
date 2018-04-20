@@ -4,7 +4,8 @@
   top: 120px;
   right: 0;
   bottom: 0;
-  overflow: auto;
+  overflow-x: hidden;
+  overflow-y: auto;
   left: 200px;
   transition: left 0.4s ease;
   
