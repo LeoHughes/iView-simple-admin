@@ -57,6 +57,9 @@ export default {
             }
           }
           break;
+        case 0:
+          state.openTabs = [].concat(state.openTabs[0]);
+          break;
       }
     },
     //更新当前查看的左侧菜单页数据
