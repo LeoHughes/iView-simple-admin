@@ -6,6 +6,7 @@ import Router from "vue-router";
 import { LoadingBar } from "iview";
 import routes from "@/router/routes";
 import store from "@/store/index";
+import config from "@/config";
 
 Vue.use(Router);
 
@@ -29,7 +30,7 @@ router.beforeEach(async(to, from, next) => {
       if (!store.getters.roles || store.getters.roles.length === 0) {
         //刷新页面缺失权限数据则通过token重新拉取
 
-        const token = localStorage.getItem("authToken");
+        const token = localStorage.getItem(config.token);
 
         await store.dispatch("getRoles", { token });
 
