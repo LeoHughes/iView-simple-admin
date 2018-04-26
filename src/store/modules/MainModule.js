@@ -57,7 +57,7 @@ export default {
             }
           }
           break;
-        case 0:
+        case 2:
           state.openTabs = [].concat(state.openTabs[0]);
           break;
       }
