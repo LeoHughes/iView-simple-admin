@@ -107,27 +107,27 @@ export default {
       this.$router.push({ path });
     },
     moveTo(tab) {
-      let scrollWidth = this.$refs.tabs.scrollWidth;
+      // let scrollWidth = this.$refs.tabs.scrollWidth;
 
-      let { $el } = this.tagRefs.find(item => {
-        return item.name === tab.name;
-      });
+      // let { $el } = this.tagRefs.find(item => {
+      //   return item.name === tab.name;
+      // });
 
-      let offsetLeft = $el.offsetLeft;
+      // let offsetLeft = $el.offsetLeft;
 
-      let preOffsetLeft = $el.previousSibling !== null ? $el.previousSibling.clientWidth : 40;
+      // let preOffsetLeft = $el.previousSibling !== null ? $el.previousSibling.clientWidth : 40;
 
-      let moveLeft = offsetLeft - preOffsetLeft;
+      // let moveLeft = offsetLeft - preOffsetLeft;
 
-      if(offsetLeft >= (this.visiableWidth - $el.clientWidth)){
+      // if(offsetLeft >= (this.visiableWidth - $el.clientWidth)){
 
-        this.tabsLeft = moveLeft === 0 || moveLeft < 50 ? 40 : -moveLeft;
+      //   this.tabsLeft = moveLeft === 0 || moveLeft < 50 ? 40 : -moveLeft;
 
-      }else{
+      // }else{
 
-        this.tabsLeft = 40;
+      //   this.tabsLeft = 40;
 
-      }
+      // }
 
     },
     pre(){
