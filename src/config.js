@@ -7,5 +7,6 @@ export default {
   login: '/login', //POST
   getRoles: '/getRole', //GET
   getMainLeftMenu: '/getMainLeftMenu', //GET
-  getMessages: '/getMessages', //POST
+  getUnReadMessagesCount: '/getUnReadMessagesCount', //GET
+  getMessages: '/getMessages', //GET
 }

@@ -18,6 +18,8 @@ export default {
   mutations: {
     changeMessages(state, { count, messages }) {
       state.messages = messages;
+    },
+    changeMessagesCount(state, count) {
       state.messageCount = count;
     },
     clearMessages(state) {
@@ -26,21 +28,38 @@ export default {
     }
   },
   actions: {
-    async getMessages({ dispatch, commit }, { token }) {
+    async getUnReadMessagesCount({ dispatch, commit }) {
       try {
-        const param = {
-          token
-        };
 
-        const { data } = await axios.post(config.getMessages, qs.stringify(param));
+        const { data } = await axios.get(config.getUnReadMessagesCount);
+
+        const { code, content } = data;
+
+        code == "200" ?
+          commit("changeMessagesCount", content) :
+          commit("clearMessages");
+
+      } catch (error) {
+
+        commit("clearMessages");
+
+      }
+    },
+    async getMessages({ dispatch, commit }) {
+      try {
+
+        const { data } = await axios.get(config.getMessages);
 
         const { code, content } = data;
 
         code == "200" ?
           commit("changeMessages", content) :
           commit("clearMessages");
+
       } catch (error) {
+
         commit("clearMessages");
+
       }
     }
   }
