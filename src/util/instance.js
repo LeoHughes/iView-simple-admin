@@ -60,7 +60,10 @@ instance.interceptors.response.use(response => {
 }, error => {
 
   notice({
-    desc: '网络请求响应超时，请稍后再试！'
+    desc: '网络请求响应超时，请稍后再试！',
+    cb: () => {
+      window.location.reload();
+    }
   })
 
 })
