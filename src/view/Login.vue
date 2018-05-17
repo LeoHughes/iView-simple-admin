@@ -62,7 +62,7 @@ export default {
       },
       //校验规则
       validate: {
-        userName: [{ required: true, min: 6, message: "请输入用户名!" }],
+        userName: [{ required: true, min: 5, message: "请输入用户名!" }],
         passWord: [{ required: true, min: 6, message: "请输入密码!" }]
       },
       //登录按钮等待(放重复提交)

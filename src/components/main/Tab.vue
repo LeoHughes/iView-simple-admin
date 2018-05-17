@@ -44,7 +44,7 @@
   <div ref="tabsView" class="tabs-view">
     <Button class="jump pre" type="text" icon="ios-arrow-left" size="large" @click="pre"></Button>
 
-    <div ref="tabs" class="tabs" :style="{left:tabsLeft+'px',transition:'left 1s ease'}">
+    <div ref="tabs" class="tabs" :style="{left:tabsLeft+'px'}">
         <Tag ref="tagOpened" v-for="(item,i) in openTabs" :key="item.name+i" :name="item.name" type="dot" :closable="item.path !== '/'" :color="activeName === item.title ? 'blue':''" @click.native="changeTab(item)" @on-close="delTab(item,1)">
           {{ item.title }}
         </Tag>

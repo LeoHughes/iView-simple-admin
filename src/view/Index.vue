@@ -14,7 +14,6 @@
 
     &-collapse {
       margin-left: 80px;
-      transition: margin 0.4s ease;
     }
 
   }

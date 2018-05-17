@@ -86,7 +86,7 @@ export default {
     return {};
   },
   computed: {
-    ...mapGetters(["token","userInfo","messages","messageCount"]),
+    ...mapGetters(["token","userInfo","messageCount"]),
     isCollapsed() {
       return this.isSiderCollapsed;
     },
@@ -95,10 +95,10 @@ export default {
     }
   },
   async beforeMount(){
-    await this.getMessages(this.token);
+    await this.getUnReadMessagesCount();
   },
   methods: {
-    ...mapActions(["loginOut","getMessages"]),
+    ...mapActions(["loginOut","getUnReadMessagesCount"]),
     //收起边栏
     toggleSiderMenu() {
       this.$emit("toggleSiderMenu");
