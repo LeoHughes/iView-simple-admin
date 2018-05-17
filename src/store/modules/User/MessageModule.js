@@ -23,7 +23,7 @@ export default {
       state.messageCount = count;
     },
     clearMessages(state) {
-      state.messages = null;
+      state.messages = [];
       state.messageCount = 0;
     }
   },
@@ -45,10 +45,10 @@ export default {
 
       }
     },
-    async getMessages({ dispatch, commit }) {
+    async getMessages({ dispatch, commit }, param) {
       try {
 
-        const { data } = await axios.get(config.getMessages);
+        const { data } = await axios.post(config.getMessages, qs.stringify(param));
 
         const { code, content } = data;
 
