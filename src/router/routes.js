@@ -1,4 +1,58 @@
 //默认路由配置
+
+let pageRoutes = [{
+    path: "/home",
+    name: "Home",
+    meta: {
+      requireAuth: true,
+      title: "主页"
+    },
+    component: () =>
+      import ("@/view/Home")
+  }, {
+    path: "/test",
+    name: "Test",
+    meta: {
+      requireAuth: true,
+      title: "测试子菜单1"
+    },
+    component: () =>
+      import ("@/view/Test/Test")
+  },
+  {
+    path: "/test/child",
+    name: "TestChild",
+    meta: {
+      requireAuth: true,
+      title: "测试子菜单2"
+    },
+    component: () =>
+      import ("@/view/Test/TestChild")
+  },
+  {
+    path: "/message",
+    name: "Message",
+    meta: {
+      requireAuth: true,
+      title: "消息中心"
+    },
+    component: () =>
+      import ("@/view/UserCenter/Message")
+  },
+  {
+    path: "/user/center",
+    name: "UserCenter",
+    meta: {
+      requireAuth: true,
+      title: "个人中心"
+    },
+    component: () =>
+      import ("@/view/UserCenter/Center")
+  }
+]
+
+
+
 export default [{
     path: "*",
     name: "404",
@@ -36,55 +90,6 @@ export default [{
     redirect: '/home',
     component: () =>
       import ("@/view/Index"),
-    children: [{
-        path: "/home",
-        name: "Home",
-        meta: {
-          requireAuth: true,
-          title: "主页"
-        },
-        component: () =>
-          import ("@/view/Home")
-      }, {
-        path: "/test",
-        name: "Test",
-        meta: {
-          requireAuth: true,
-          title: "测试子菜单1"
-        },
-        component: () =>
-          import ("@/view/Test/Test")
-      },
-      {
-        path: "/test/child",
-        name: "TestChild",
-        meta: {
-          requireAuth: true,
-          title: "测试子菜单2"
-        },
-        component: () =>
-          import ("@/view/Test/TestChild")
-      },
-      {
-        path: "/message",
-        name: "Message",
-        meta: {
-          requireAuth: true,
-          title: "消息中心"
-        },
-        component: () =>
-          import ("@/view/UserCenter/Message")
-      },
-      {
-        path: "/user/center",
-        name: "UserCenter",
-        meta: {
-          requireAuth: true,
-          title: "个人中心"
-        },
-        component: () =>
-          import ("@/view/UserCenter/Center")
-      }
-    ]
+    children: pageRoutes
   }
 ];
