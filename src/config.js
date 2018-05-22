@@ -9,4 +9,5 @@ export default {
   getMainLeftMenu: '/getMainLeftMenu', //GET
   getUnReadMessagesCount: '/getUnReadMessagesCount', //GET
   getMessages: '/getMessages', //GET
+  updatedUserAvatar: '/user/uploadAvatar', //POST
 }
