@@ -1,7 +1,7 @@
 <style lang="less" scoped>
 .content {
   position: absolute;
-  top: 120px;
+  top: 125px;
   right: 0;
   bottom: 0;
   overflow-x: hidden;

@@ -4,8 +4,9 @@
 .tabs-view {
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 55px;
   overflow: hidden;
+  box-shadow: 3px 3px 3px #eee;
 
   .tabs {
     position: absolute;
