@@ -1,0 +1,71 @@
+a:focus {
+  outline: none;
+}
+
+.text-{
+  &left{
+    text-align: left;
+  }
+  &center{
+    text-align:center;
+  }
+  &right{
+    text-align:right;
+  }
+}
+
+.padding(@u:0,@r:0,@d:0,@l:0){
+  padding: @u @r @d @l;
+}
+
+.paddingHelper(@num){
+  .padding(@num,@num,@num,@num);
+  &-rl{
+    .padding(0,@num,0,@num);
+  }
+  &-ud{
+    .padding(@num,0,@num,0);
+  }
+}
+
+.margin(@u:0,@r:0,@d:0,@l:0){
+  margin: @u @r @d @l;
+}
+
+.marginHelper(@num){
+  .margin(@num,@num,@num,@num);
+  &-rl{
+    .margin(0,@num,0,@num);
+  }
+  &-ud{
+    .margin(@num,0,@num,0);
+  }
+}
+
+
+.p-{
+  &10{
+    .paddingHelper(10px);
+   }
+  &15{
+    .paddingHelper(15px);
+  }
+  &20{
+    .paddingHelper(20px);
+  }
+}
+
+.m-{
+  &5{
+    .marginHelper(5px);
+  }
+  &10{
+    .marginHelper(10px);
+   }
+  &15{
+    .marginHelper(15px);
+  }
+  &20{
+    .marginHelper(20px);
+  }
+}

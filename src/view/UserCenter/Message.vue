@@ -2,8 +2,8 @@
   <section>
     <Spin fix size="large" v-show="loading"></Spin>
     <Row :gutter="14">
-      <Col span="24" :style="{textAlign:'left',padding:'10px'}">
-      <RadioGroup v-model="type" type="button">
+      <Col span="24" class="text-left p-10">
+      <RadioGroup v-model="type">
         <Radio label="unread">未读</Radio>
         <Radio label="read">已读</Radio>
       </RadioGroup>
@@ -17,7 +17,7 @@
       </Card>
       </Col>
 
-      <Col span="24" :style="{textAlign:'center',padding:'10px 0'}">
+      <Col span="24" class="text-center p-10-ud">
       <Page :current="page" :page-size="1" :total="messages.length" @on-change="turnPage"></Page>
       </Col>
     </Row>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 export default {

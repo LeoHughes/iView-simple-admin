@@ -7,7 +7,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   left: 200px;
-  padding: 0 25px;
+  padding: 10px;
   
   &.mini{
     left: 80px;
