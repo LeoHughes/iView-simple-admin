@@ -45,9 +45,10 @@
 <template>
   <Header class="header-bar">
     <div class="collapsible-icon">
-      <Button type="text" @click.native="toggleSiderMenu">
-        <Icon :type="isCollapsed ? 'toggle-filled' : 'toggle'" size="34"></Icon>
-      </Button>
+      <Switch size="large" :value="isCollapsed" @on-change="toggleSiderMenu">
+        <span slot="open">收起</span>
+        <span slot="close">展开</span>
+      </Switch>
     </div>
 
     <div class="header-control">

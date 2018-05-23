@@ -20,6 +20,9 @@ export default {
       }
     }
   },
+  beforeCreate(){
+    this.$router.push('/home');
+  },
   methods:{
     ...mapMutations(["updateActiveTab"])
   }
