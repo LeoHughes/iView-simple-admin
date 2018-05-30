@@ -46,7 +46,7 @@
     <Button class="jump pre" type="text" icon="ios-arrow-left" size="large" @click="pre"></Button>
 
     <div ref="tabs" class="tabs" :style="{left:tabsLeft+'px'}">
-        <Tag ref="tagOpened" v-for="(item,i) in openTabs" :key="item.name+i" :name="item.name" type="dot" :closable="item.path !== '/'" :color="activeName === item.title ? 'blue':''" @click.native="changeTab(item)" @on-close="delTab(item,1)">
+        <Tag v-for="(item,i) in openTabs" :ref="item.name" :key="item.name+i" :name="item.name" type="dot" :closable="item.path !== '/'" :color="activeName === item.title ? 'blue':''" @click.native="changeTab(item)" @on-close="delTab(item,1)">
           {{ item.title }}
         </Tag>
     </div>
@@ -63,7 +63,6 @@ export default {
   data() {
     return {
       tabsLeft: 40,
-      tagRefs: [],
       visiableWidth:0
     };
   },
@@ -74,7 +73,6 @@ export default {
     }
   },
   mounted() {
-    this.tagRefs = this.$refs.tagOpened;
     this.visiableWidth = this.$refs.tabsView.clientWidth -40;
   },
   watch: {
@@ -110,25 +108,27 @@ export default {
     moveTo(tab) {
       let scrollWidth = this.$refs.tabs.scrollWidth;
 
-      let { $el } = this.tagRefs.find(item => {
-        return item.name === tab.name;
-      });
+      this.$nextTick(() => {
 
-      let offsetLeft = $el.offsetLeft;
+        let $el = this.$refs[tab.name][0].$el;
 
-      let preOffsetLeft = $el.previousSibling !== null ? $el.previousSibling.clientWidth : 40;
+        let offsetLeft = $el.offsetLeft;
 
-      let moveLeft = offsetLeft - preOffsetLeft;
+        let preOffsetLeft = $el.previousSibling !== null ? $el.previousSibling.clientWidth : 40;
 
-      if(offsetLeft >= (this.visiableWidth - $el.clientWidth)){
+        let moveLeft = offsetLeft - preOffsetLeft;
 
-        this.tabsLeft = moveLeft === 0 || moveLeft < 50 ? 40 : -moveLeft;
+        if(offsetLeft >= (this.visiableWidth - $el.clientWidth)){
 
-      }else{
+          this.tabsLeft = moveLeft === 0 || moveLeft < 50 ? 40 : -moveLeft;
 
-        this.tabsLeft = 40;
+        }else{
 
-      }
+          this.tabsLeft = 40;
+
+        }
+
+      })
 
     },
     pre(){
