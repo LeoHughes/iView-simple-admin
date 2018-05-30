@@ -25,7 +25,7 @@
         </FormItem>
         <FormItem class="text-left" label="头像：">
           <Avatar class="m-10-ud" shape="square" size="large" :src="formData.avatar"></Avatar>
-          <Upload :action="uploadUrl" :format="['jpg','jpeg','png']" :on-format-error="uploadFormatErr" :on-success="uploadSuccess" :max-size="2048">
+          <Upload :action="uploadUrl" :format="['jpg','jpeg','png']" :on-format-error="uploadFormatErr" :on-success="uploadSuccess" :on-error="uploadError" :max-size="2048">
             <Button type="ghost" icon="ios-cloud-upload-outline">上传头像</Button>
           </Upload>
         </FormItem>
@@ -84,6 +84,9 @@ export default {
       if (res.code === 200) {
         this.formData.avatar = res.content.avatar;
       }
+    },
+    uploadError(error){
+      this.$Message.error('上传失败,请稍后再试!');
     },
     sumbit() {
       this.$refs.formData.validate(valid => {
