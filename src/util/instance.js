@@ -1,10 +1,15 @@
-import { Notice } from 'iview'
+import {
+  Notice
+} from 'iview'
 import axios from 'axios'
 import Store from '@/store/index'
 import Router from '@/router/index'
 import config from '@/config'
 
-const notice = function({ desc = '数据请求失败，请稍后再试', cb = null }) {
+const notice = function({
+  desc = '数据请求失败，请稍后再试',
+  cb = null
+}) {
 
   Notice.destroy();
 
@@ -36,7 +41,9 @@ instance.interceptors.response.use(response => {
 
   } else {
 
-    const { data } = response;
+    const {
+      data
+    } = response;
 
     //失效,无效token拦截
     if (data.code == '403' || data.code == '500') {
@@ -60,10 +67,7 @@ instance.interceptors.response.use(response => {
 }, error => {
 
   notice({
-    desc: '网络请求响应超时，请稍后再试！',
-    cb: () => {
-      window.location.reload();
-    }
+    desc: '网络请求响应超时，请稍后再试！'
   })
 
 })
